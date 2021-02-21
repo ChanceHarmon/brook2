@@ -1,13 +1,13 @@
 'use stirct';
 
 Fly.myFlies = []
-Fly.travelFlies = [];
 
 $('#addFly').on('submit', handleSubmit);
 
-function turnOnListner() {
-
-  $('button').on('click', handleMoveToTravel);
+Fly.prototype.turnOnTravelListner = function () {
+  let convert = this.identifier.toString()
+  console.log(convert)
+  $(`#fly_${convert}`).on('click', handleMoveToTravel);
 }
 
 function Fly(type, size, color) {
@@ -19,16 +19,25 @@ function Fly(type, size, color) {
 }
 
 Fly.prototype.render = function () {
-
-
   let $template = $('<li></li>')
   let $liTemplate = $('#template').html()
   $template.html($liTemplate)
   $template.find('h3').text(this.type);
   $template.find('h4').text(this.size);
   $template.find('h5').text(this.color);
+  $template.find('button').attr('value', this.identifier);
+  $template.find('button').attr('id', `fly_${this.identifier}`);
   $('#my-flies').append($template)
-
+}
+Fly.prototype.renderTravel = function () {
+  let $template = $('<li></li>')
+  let $liTemplate = $('#travelTemplate').html()
+  $template.html($liTemplate)
+  $template.attr('id', `original_${this.identifier}`)
+  $template.find('h3').text(this.type);
+  $template.find('h4').text(this.size);
+  $template.find('h5').text(this.color);
+  $('#travel-flies').append($template)
 }
 
 function handleSubmit(event) {
@@ -36,29 +45,19 @@ function handleSubmit(event) {
   const $inputs = $('#addFly :input')
   let returnFly = new Fly($inputs[0].value, $inputs[1].value, $inputs[2].value);
   returnFly.render()
-  // $('#my-flies').append(`<li><p>Type: ${returnFly.type},</p> <p>Size: ${returnFly.size},</p> <p>Color: ${returnFly.color}</p><button type="submit" value="${returnFly.identifier}">Add to Travel Box</button></li>`)
-  turnOnListner()
-
+  returnFly.turnOnTravelListner()
 }
 
 function handleMoveToTravel(event) {
-
   event.preventDefault();
-  for (let i = 0; i < myFlies.length; i++) {
-    console.log(typeof myFlies[i].identifier)
-    // console.log($('button').val(), myFlies[i].identifier)
-    if (event.target.value === myFlies[i].identifier.toString()) {
-      $('#travel-flies').append(`<li><p>Type: ${myFlies[i].type},</p> <p>Size: ${myFlies[i].size},</p> <p>Color: ${myFlies[i].color}</p><button type="submit">Let\'s Go Fishing</button></li>`)
-    }
-  }
+  Fly.myFlies[parseInt(this.value)].renderTravel()
 }
 
-//Bug on .val for button
 
 
 //Take home Instructions
 
-// Finish basic functionality for moves of flies
+// Finish basic functionality for moves of flies // Considering basic refactor functional for now
 // CSS
 // Animation
 // Deploy

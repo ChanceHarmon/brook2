@@ -21,9 +21,9 @@ Fly.prototype.render = function () {
   let $template = $('<li></li>')
   let $liTemplate = $('#template').html()
   $template.html($liTemplate)
-  $template.find('h3').text(this.type);
-  $template.find('h4').text(this.size);
-  $template.find('h5').text(this.color);
+  $template.find('h3').text(`Fly Type: ${this.type}`);
+  $template.find('h4').text(`Fly Size: ${this.size}`);
+  $template.find('h5').text(`Fly Color: ${this.color}`);
   $template.find('button').attr('value', this.identifier);
   $template.find('button').attr('id', `fly_${this.identifier}`);
   $('#my-flies').append($template)
@@ -50,6 +50,9 @@ function handleSubmit(event) {
 
 function handleMoveToTravel(event) {
   event.preventDefault();
+  $(`#${this.id}`).off("click", handleMoveToTravel);
+  $(`#${this.id}`).css({ 'background-color': 'red', 'border-radius': '0', 'padding': '0.5em 1.25em' })
+  $(`#${this.id}`).text('Fly Ready!')
   Fly.myFlies[parseInt(this.value)].renderTravel()
 }
 

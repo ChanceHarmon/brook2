@@ -6,7 +6,6 @@ $('#addFly').on('submit', handleSubmit);
 
 Fly.prototype.turnOnTravelListner = function () {
   let convert = this.identifier.toString()
-  console.log(convert)
   $(`#fly_${convert}`).on('click', handleMoveToTravel);
 }
 
@@ -29,14 +28,15 @@ Fly.prototype.render = function () {
   $template.find('button').attr('id', `fly_${this.identifier}`);
   $('#my-flies').append($template)
 }
+
 Fly.prototype.renderTravel = function () {
   let $template = $('<li></li>')
   let $liTemplate = $('#travelTemplate').html()
   $template.html($liTemplate)
   $template.attr('id', `original_${this.identifier}`)
-  $template.find('h3').text(this.type);
-  $template.find('h4').text(this.size);
-  $template.find('h5').text(this.color);
+  $template.find('h3').text(`Fly Type: ${this.type}`);
+  $template.find('h4').text(`Fly Size: ${this.size}`);
+  $template.find('h5').text(`Fly Color: ${this.color}`);
   $('#travel-flies').append($template)
 }
 
